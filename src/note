@@ -20,13 +20,40 @@ EJB由于最佳场景的限制，其缺点也是显露无疑：需要拥有EJB C
 Service Provider。
 	那么被注入对象是通过哪些方式来通知IoC Service Provider为其提供服务的呢？
 	通常有三种方式：构造函数注入、setter方法注入以及接口注入（侵入式较强，逐渐被淘汰）。
+（1）IoC Service Provider（ISP）
+	IoC Service Provider在这里是一个抽象出来的概念，它可以指代任何将IoC场景中的业务对象绑定到一起的实现方式。它可以是一段代码，也可以是一组相关的类，甚至可以
+是比较通用的IoC框架或者IoC容器实现。
+	IPerson person = new Man();
+	IWork work = new MakeMoney();
+	PersonProvider provider = new PersonProvider(person, work);
+	provider.getWorkPerson();
+	上面的代码就是一个最简易的IoC Service Provider。同样，Spring的IoC容器就是一个提供依赖注入服务的IoC Service Provider。ISP的职责主要有两个：
+业务对象的构建管理和业务对象间的依赖绑定。
+	业务对象的构建管理（注册）在IoC容器启动的时候完成。而决定业务对象间的依赖绑定关系通常有三种方式：
+	直接编码方式：
+	IoContainer container = ....; // 获取容器
+	container.register(PersonProvider.class, new PersonProvider()); // 注册业务类
+	container.register(IPerson.class, new Man()); // 注册业务对象，为相应的类指定具体的实例
+	... 
+	PersonProvider provider = (PersonProvider)container.get(PersonProvider.class); // 直接从容器中获取所需类对象即可
+	provider.getWorkPerson();
 	
+	配置文件方式（更为普遍）：
+	<bean id="provider" class="..PersonProvider">
+		<property name="person">
+			<ref bean="man"/>
+		</property>
+	</bean>
+	<bean id="man" class="..impl.Man"/>
+	<bean id="work" class="..impl.MakeMoney"/>
 	
+	元数据方式（略）
 	
-	
-	
-	
-	
+四，Spring容器之BeanFactory
+	Spring提供了两种容器类型：BeanFactory和ApplicationContext。
+
+
+五，Spring容器之ApplicationContext
 	
 
 	
