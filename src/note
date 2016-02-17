@@ -1,6 +1,6 @@
 一，简介
 	JavaEE作为一种企业级应用开发平台，其优异的表现是我们有目共睹的。但是，要想合理并充分的发挥其平台提供的各项服务，就需要一个优秀的框架，Spring便呼之即出。它是一
-个轻量级的Java开发框架。在Spring之前，开发人员使用的最广泛的JavaEEn开发框架当属EJB了，它也是使用JavaEE平台各项服务的一种方式，但是更适用于分布式环境（场景），
+个轻量级的Java开发框架。在Spring之前，开发人员使用的最广泛的JavaEE开发框架当属EJB了，它也是使用JavaEE平台各项服务的一种方式，但是更适用于分布式环境（场景），
 EJB由于最佳场景的限制，其缺点也是显露无疑：需要拥有EJB Container的应用服务器；增加开发，测试，部署的复杂度；最佳场景为分布式（中小型应用不适合）。
 
 二，基于Spring的功能树
@@ -51,10 +51,19 @@ Service Provider。
 	
 四，Spring容器之BeanFactory
 	Spring提供了两种容器类型：BeanFactory和ApplicationContext。
-
+	BeanFactory是一个基础类型的IoC容器，默认采用延迟初始化策略，适用于资源有限的场景。BeanFactory作为Spring提供的基本容器类型，可以完成作为
+ISP的所有职责，包括业务对象的注册和依赖关系的绑定。显然，BeanFactory会提供一个获取对象的方法接口（getBean(..)方法等）。
+	注意，补充一下，是否引入容器，对业务接口与实现类的设计是没有影响的，它影响的是对象的获取方式和对象间的依赖关系。
+	使用Xml可以进行bean的管理，还可以解决bean的依赖关系，Spring的<bean>标签提供了两种解决bean之间依赖关系的方式：
+	（1）构造方法注入，使用的标签是<constructor-arg>，需要被注入bean对象提供对应的构造方法
+	<bean id="provider" class="..PersonProvider"/>
+		<constructor-arg ref="man">
+	</bean>
+	（2）setter方法注入，使用的标签是<property>，需要被注入的bean对象提供对应的setPerson()方法
+	<bean id="provider" class="..PersonProvider">
+		<property name="person" value="man"/>
+	</bean>
+	实际选择时最好的解决方案是用构造器参数实现强制依赖，setter方法实现可选依赖。
 
 五，Spring容器之ApplicationContext
-	
-
-	
-	
+	ApplicationContext在BeanFactory的基础之上构建，提供更多功能（如事件发布、国际化信息支持等），属于高级容器。
