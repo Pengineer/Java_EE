@@ -66,4 +66,15 @@ ISP的所有职责，包括业务对象的注册和依赖关系的绑定。显�
 	实际选择时最好的解决方案是用构造器参数实现强制依赖，setter方法实现可选依赖。
 
 五，Spring容器之ApplicationContext
-	ApplicationContext在BeanFactory的基础之上构建，提供更多功能（如事件发布、国际化信息支持等），属于高级容器。
+	ApplicationContext在BeanFactory的基础之上构建，提供更多功能（如事件发布、国际化信息支持、统一资源加载策略等），属于高级容器。该接口的直接子类
+是AbstractApplicationContext。（区别于Struts1/Struts2的ServletContext/ActionContext：Action之间相互通信以及资源路径等）
+	Spring为基础容器BeanFactory提供了XMLBeanFactory实现，同样，它也为ApplicationContext类型的容器提供了以下常用的实现：
+	（1）FileSystemXMLApplicationContext：默认情况下，从文件系统加载bean定义以及相关资源的ApplicationContext实现；
+	（2）ClassPathXMLApplicationContext：默认情况下，从classpath加载定义以及相关资源的ApplicationContext实现；
+	（3）XMLWebApplicationContext：用于Web应用的ApplicationContext实现。
+	
+	统一资源加载策略：Spring框架内部使用org.springframework.core.io.Resource接口作为所有资源的抽象和访问接口，Resource接口可以根据资源
+		的不同类型，或则资源所处的不同场合，给出相应的具体实现，Spring框架在这个理念的基础上，提供了一些实现类，比如ClassPathResource。
+		对于资源的加载，ApplicationContext间接继承了ResourceLoader接口，因此任何ApplicationContext实现都是一个资源加载器。
+	
+
