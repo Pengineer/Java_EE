@@ -103,7 +103,7 @@ AOP一般用于权限控制，事务管理，日志记录等场合。
 	由于JDBC API在使用起来非常的麻烦，Spring框架提出了JdbcTemplate作为数据访问的Helper类，JdbcTemplate是整个Spring数据抽象层提供的所有JDBC API
 最佳实践的基础，框架内其它更加方便的Helper类以及更高层次的抽象全部构建与JdbcTemplate之上。
 	JdbcTemplate主要关注两件事：封装所有基于JDBC的数据访问代码；将基于JDBC的数据访问异常纳入Spring自身的异常体系中，简化客户端对异常的处理。
-	JdbcTemplate的实现其实就是在模板方法设计模式的基础上引入了回调函数（很不错的方式，避免单纯的模板方法模式下需要强制用户继承抽象子类）。
+	JdbcTemplate的实现其实就是在模板方法设计模式的基础上引入了Callback回调接口（很不错的方式，避免单纯的模板方法模式下需要强制用户继承抽象子类）。
 	
 	2，DataSource
 	J2EE应用服务器提供了DataSource实现，但是获取到的连接对象都是代理对象，无法使用Connection的一些特色功能。如果我们要使用驱动程序提供的数据库
@@ -120,6 +120,9 @@ AOP一般用于权限控制，事务管理，日志记录等场合。
 	（2）远程DataSource访问：对于运行于应用服务器的程序或者分布式应用，通过JNDI访问DataSource时最常见的方式。
 	
 	3，Spring对各种ORM框架的集成
+	Spring在继承各种ORM框架时主要关注点有3个：数据访问资源的管理；数据访问异常的转译；事务管理。
+	（1）HibernateTemplate，拥有SessionFactory属性，而SessionFactory又拥有DataSource属性，显然SessionFactory产生的Session是可以连接数据库的，
+而且它还可以操作数据库。HibernateTemplate的实现采用的设计思路和JdbcTemplate完全是一样的。（印象笔记）（smdb自己实现了一个HibernateTemplate）
 	
 	
 	
